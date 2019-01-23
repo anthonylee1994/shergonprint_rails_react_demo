@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="rails_test_development@localhost" uuid="d800d3e3-ed61-4a60-bc31-b48e22184678">
+      <database-info product="PostgreSQL" version="11.0" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <introspection-schemas>rails_test_development:public</introspection-schemas>
+    </data-source>
+  </component>
+</project>

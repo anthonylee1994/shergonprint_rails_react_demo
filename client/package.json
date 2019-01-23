@@ -1,0 +1,53 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^3.9.0",
+    "@material-ui/icons": "^3.0.2",
+    "@types/lodash": "^4.14.120",
+    "@types/react-intl-redux": "^0.1.11",
+    "@types/react-loadable": "^5.5.0",
+    "@types/react-redux": "^7.0.0",
+    "@types/react-router": "^4.4.3",
+    "@types/react-router-redux": "^5.0.17",
+    "@types/redux-form": "^7.4.16",
+    "connected-react-router": "^6.2.2",
+    "lodash": "^4.17.11",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-intl": "^2.8.0",
+    "react-intl-redux": "^2.1.0",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^6.0.0",
+    "react-router": "^4.3.1",
+    "react-router-redux": "^4.0.8",
+    "react-scripts-ts": "3.1.0",
+    "redux-dynamic-modules": "^3.3.1",
+    "redux-dynamic-modules-saga": "^3.3.1",
+    "redux-dynamic-modules-thunk": "^3.3.1",
+    "redux-form": "^8.1.0",
+    "redux-form-material-ui": "^5.0.0-beta.3",
+    "redux-saga": "^1.0.0",
+    "redux-thunk": "^2.3.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.20",
+    "@types/react-dom": "^16.0.11",
+    "typescript": "^3.2.4"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:3001"
+    }
+  }
+}

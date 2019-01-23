@@ -1,0 +1,19 @@
+.todo-title {
+    max-width: 800px;
+    margin: 64px auto 32px auto;
+}
+
+.todo-title h3, .todo-title h5 {
+    text-align: center;
+}
+
+.todo-title h5 {
+    color: #555;
+    margin: 16px;
+}
+
+@media screen and (min-width: 960px) {
+    .todo-title {
+        margin: 96px auto 32px auto;
+    }
+}

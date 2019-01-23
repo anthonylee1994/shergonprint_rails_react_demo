@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="rails_test_development@localhost">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.4">
+    <root id="1"/>
+    <database id="2" parent="1" name="rails_test_development">
+      <ObjectId>16513</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <database id="3" parent="1" name="postgres">
+      <ObjectId>13364</ObjectId>
+    </database>
+    <database id="4" parent="1" name="anthony">
+      <ObjectId>16385</ObjectId>
+    </database>
+    <database id="5" parent="1" name="rails-test_development">
+      <ObjectId>16389</ObjectId>
+    </database>
+    <database id="6" parent="1" name="rails-test_test">
+      <ObjectId>16435</ObjectId>
+    </database>
+    <database id="7" parent="1" name="rails_test_test">
+      <ObjectId>16901</ObjectId>
+    </database>
+    <schema id="8" parent="2" name="public">
+      <ObjectId>2200</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="9" parent="2" name="pg_catalog">
+      <ObjectId>11</ObjectId>
+    </schema>
+    <schema id="10" parent="2" name="pg_toast">
+      <ObjectId>99</ObjectId>
+    </schema>
+    <schema id="11" parent="2" name="pg_temp_1">
+      <ObjectId>11804</ObjectId>
+    </schema>
+    <schema id="12" parent="2" name="pg_toast_temp_1">
+      <ObjectId>11805</ObjectId>
+    </schema>
+    <schema id="13" parent="2" name="information_schema">
+      <ObjectId>13068</ObjectId>
+    </schema>
+    <sequence id="14" parent="8" name="items_id_seq">
+      <ObjectId>16542</ObjectId>
+      <StateNumber>608</StateNumber>
+    </sequence>
+    <sequence id="15" parent="8" name="todos_id_seq">
+      <ObjectId>16531</ObjectId>
+      <StateNumber>607</StateNumber>
+    </sequence>
+    <sequence id="16" parent="8" name="users_id_seq">
+      <ObjectId>16890</ObjectId>
+      <StateNumber>9875</StateNumber>
+    </sequence>
+    <table id="17" parent="8" name="ar_internal_metadata">
+      <ObjectId>16523</ObjectId>
+      <StateNumber>606</StateNumber>
+    </table>
+    <table id="18" parent="8" name="items">
+      <ObjectId>16544</ObjectId>
+      <StateNumber>608</StateNumber>
+    </table>
+    <table id="19" parent="8" name="schema_migrations">
+      <ObjectId>16515</ObjectId>
+      <StateNumber>605</StateNumber>
+    </table>
+    <table id="20" parent="8" name="todos">
+      <ObjectId>16533</ObjectId>
+      <StateNumber>608</StateNumber>
+    </table>
+    <table id="21" parent="8" name="users">
+      <ObjectId>16892</ObjectId>
+      <StateNumber>9875</StateNumber>
+    </table>
+  </database-model>
+</dataSource>
