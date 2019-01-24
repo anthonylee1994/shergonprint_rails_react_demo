@@ -1,7 +1,8 @@
-import { todoApiConstants } from './todo-api-constants';
+import * as ls from 'local-storage';
+// import { todoApiConstants } from './todo-api-constants';
 
-const getAuthToken = (state: any): any => state[todoApiConstants.id].auth_token;
+const getAuthToken = (state: any): any => ls.get('auth_token');
 
-export const todoApiSelector = {
+export const todoApiSelectors = {
     getAuthToken,
 };

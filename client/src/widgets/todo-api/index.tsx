@@ -1,3 +1,5 @@
+import * as ls from 'local-storage';
+
 export const todoApiBaseUrl = "/api";
 
 const generalFetchContext: any = {
@@ -18,50 +20,59 @@ export const todoApi = {
                 password
             })
         }),
-        signup: (name: string, email: string, password: string) => fetch(todoApiBaseUrl + '/signup', {
+        signup: (name: string, email: string, password: string, passwordConfirmation: string) => fetch(todoApiBaseUrl + '/signup', {
             ...generalFetchContext,
             method: 'POST',
             body: JSON.stringify({
                 name,
                 email,
-                password
+                password,
+                password_confirmation: passwordConfirmation
             })
+        }),
+        info: () => fetch(todoApiBaseUrl + '/account', {
+            ...generalFetchContext,
+            method: 'GET',
+            headers: {
+                ...generalFetchContext.headers,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
+            },
         }),
     },
     todo: {
         items: {
-            list: (token: string, todoId: number) => (page = 0) => fetch(todoApiBaseUrl + `/todos/${todoId}/?page=${page}`, {
+            list: (todoId: number) => fetch(todoApiBaseUrl + `/todos/${todoId}/items`, {
                 ...generalFetchContext,
                 headers: {
                     ...generalFetchContext.headers,
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
                 method: 'GET',
             }),
-            show: (token: string, todoId: number) => (id: number) => fetch(todoApiBaseUrl + `/todos/${todoId}/${id}`, {
+            show: (todoId: number, id: number) => fetch(todoApiBaseUrl + `/todos/${todoId}/items/${id}`, {
                 ...generalFetchContext,
                 headers: {
                     ...generalFetchContext.headers,
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
                 method: 'GET',
             }),
-            save: (token: string, todoId: number) => ({ name }: { name: string }) => fetch(todoApiBaseUrl + `/todos/${todoId}/`, {
+            save: (todoId: number, { name }: { name: string }) => fetch(todoApiBaseUrl + `/todos/${todoId}/items`, {
                 ...generalFetchContext,
                 headers: {
                     ...generalFetchContext.headers,
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
                 method: 'POST',
                 body: JSON.stringify({
                     name,
                 })
             }),
-            update: (token: string, todoId: number) => (id: number, { name, done }: { name: string, done: boolean }) => fetch(todoApiBaseUrl + `/todos/${todoId}/${id}`, {
+            update: (todoId: number, id: number, { name, done }: { name: string, done: boolean }) => fetch(todoApiBaseUrl + `/todos/${todoId}/items/${id}`, {
                 ...generalFetchContext,
                 headers: {
                     ...generalFetchContext.headers,
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
                 method: 'PATCH',
                 body: JSON.stringify({
@@ -69,58 +80,58 @@ export const todoApi = {
                     done
                 })
             }),
-            delete: (token: string, todoId: number) => (id: number) => fetch(todoApiBaseUrl + `/todos/${todoId}/${id}`, {
+            delete: (todoId: number, id: number) => fetch(todoApiBaseUrl + `/todos/${todoId}/items/${id}`, {
                 ...generalFetchContext,
                 headers: {
                     ...generalFetchContext.headers,
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
                 method: 'DELETE'
             }),
         },
-        list: (token: string) => (page = 0) => fetch(todoApiBaseUrl + `/todos/?page=${page}`, {
+        list: () => fetch(todoApiBaseUrl + `/todos`, {
             ...generalFetchContext,
             headers: {
                 ...generalFetchContext.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
             },
             method: 'GET',
         }),
-        show: (token: string) => (id: number) => fetch(todoApiBaseUrl + `/todos/${id}`, {
+        show: (id: number) => fetch(todoApiBaseUrl + `/todos/${id}`, {
             ...generalFetchContext,
             headers: {
                 ...generalFetchContext.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
             },
             method: 'GET',
         }),
-        save: (token: string) => ({ title }: { title: string }) => fetch(todoApiBaseUrl + '/todos', {
+        save: ({ title }: { title: string }) => fetch(todoApiBaseUrl + '/todos', {
             ...generalFetchContext,
             headers: {
                 ...generalFetchContext.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
             },
             method: 'POST',
             body: JSON.stringify({
                 title,
             })
         }),
-        update: (token: string) => (id: number, { title }: { title: string }) => fetch(todoApiBaseUrl + `/todos/${id}`, {
+        update: (id: number, { title }: { title: string }) => fetch(todoApiBaseUrl + `/todos/${id}`, {
             ...generalFetchContext,
             headers: {
                 ...generalFetchContext.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
             },
             method: 'PATCH',
             body: JSON.stringify({
                 title,
             })
         }),
-        delete: (token: string) => (id: number) => fetch(todoApiBaseUrl + `/todos/${id}`, {
+        delete: (id: number) => fetch(todoApiBaseUrl + `/todos/${id}`, {
             ...generalFetchContext,
             headers: {
                 ...generalFetchContext.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${ls.get('auth_token')}`,
             },
             method: 'DELETE'
         }),

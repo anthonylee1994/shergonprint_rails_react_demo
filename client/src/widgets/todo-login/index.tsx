@@ -12,6 +12,7 @@ import { Field, getFormValues, isSubmitting, reduxForm, SubmissionError } from '
 import { TextField } from 'redux-form-material-ui';
 import { todoApi } from '../todo-api';
 import { todoApiActions } from '../todo-api/redux/todo-api-actions';
+import { todoApiSelectors } from '../todo-api/redux/todo-api-selectors';
 import { todoLoginConstants } from './redux/todo-login-constants';
 import "./style.css";
 
@@ -23,6 +24,7 @@ interface ITodoLoginProps {
     redirectTo: (url: string) => void;
     submitting: boolean;
     setAuthToken: (token: string) => void;
+    authToken?: string;
 }
 
 const styles = (theme: any) => ({
@@ -36,6 +38,12 @@ const styles = (theme: any) => ({
 
 
 export class TodoLogin extends React.Component<ITodoLoginProps, any> {
+
+    public componentDidMount() {
+        if (!!this.props.authToken) {
+            this.props.redirectTo('/app');
+        }
+    }
 
     public signup = () => {
         this.props.redirectTo('/signup');
@@ -111,6 +119,7 @@ export class TodoLogin extends React.Component<ITodoLoginProps, any> {
 
 export default connect(
     (state) => ({
+        authToken: todoApiSelectors.getAuthToken(state),
         formValues: getFormValues(todoLoginConstants.id)(state),
         submitting: isSubmitting(todoLoginConstants.id)(state),
     }),

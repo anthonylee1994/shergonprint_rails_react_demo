@@ -16,6 +16,7 @@ import { getReduxFormModule } from './widgets/redux_form/redux/redux-form-module
 import Router from './widgets/router';
 import { getRouterModule } from './widgets/router/redux/router-module';
 import { getTodoApiModule } from './widgets/todo-api/redux/todo-api-module';
+import { getTodoAppModule } from './widgets/todo-app/redux/todo-app-module';
 import { getTodoLoginModule } from './widgets/todo-login/redux/todo-login-module';
 import { getTodoSignupModule } from './widgets/todo-signup/redux/todo-signup-module';
 import { getTodoTitleModule } from './widgets/todo-title/redux/todo-title-module';
@@ -36,6 +37,7 @@ class App extends React.Component<any, any> {
         const todoLoginModule = getTodoLoginModule();
         const todoSignupModule = getTodoSignupModule();
         const todoApiModule = getTodoApiModule();
+        const todoAppModule = getTodoAppModule();
 
         this.store = createStore(
             {
@@ -45,6 +47,7 @@ class App extends React.Component<any, any> {
                         ...todoTitleModule.lang,
                         ...todoLoginModule.lang,
                         ...todoSignupModule.lang,
+                        ...todoAppModule.lang,
                     },
                 },
             },
@@ -58,7 +61,8 @@ class App extends React.Component<any, any> {
             routerModule,
             intlModule,
             reduxFormModule,
-            todoApiModule
+            todoApiModule,
+            todoAppModule
         );
     }
 
@@ -73,12 +77,16 @@ class App extends React.Component<any, any> {
                     <MaterialWrapper>
                         <Router>
                             <Switch>
-                                <Route exact={true} path="/" component={Loadable({
-                                    loader: () => import('./pages/login'),
-                                    loading: ProgressCircle
-                                } as any)} />
                                 <Route exact={true} path="/signup" component={Loadable({
                                     loader: () => import('./pages/signup'),
+                                    loading: ProgressCircle
+                                } as any)} />
+                                <Route exact={true} path="/app" component={Loadable({
+                                    loader: () => import('./pages/app'),
+                                    loading: ProgressCircle
+                                } as any)} />
+                                <Route path="/" component={Loadable({
+                                    loader: () => import('./pages/login'),
                                     loading: ProgressCircle
                                 } as any)} />
                             </Switch>

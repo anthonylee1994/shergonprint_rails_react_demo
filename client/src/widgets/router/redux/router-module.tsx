@@ -1,7 +1,7 @@
 import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 
-export const history = createHashHistory();
+export const history = createBrowserHistory();
 
 export function getRouterModule() {
     return {

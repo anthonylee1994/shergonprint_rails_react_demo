@@ -5,7 +5,7 @@ module V1
 
     # GET /todos/:todo_id/items
     def index
-      json_response(@todo.items)
+      json_response(@todo.items.order(created_at: :desc))
     end
 
     # GET /todos/:todo_id/items/:id

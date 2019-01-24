@@ -18,6 +18,10 @@ class UsersController < ApplicationController
     json_response(response, :created)
   end
 
+  def account
+    json_response(current_user)
+  end
+
   private
 
   def user_params

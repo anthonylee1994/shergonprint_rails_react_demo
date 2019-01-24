@@ -1,0 +1,11 @@
+.app-content {
+    margin: 56px auto 88px auto;
+    overflow-y: auto;
+    max-width: 800px;
+}
+
+@media screen and (min-width: 600px) {
+    .app-content {
+        margin: 64px auto 96px auto;
+    }
+}

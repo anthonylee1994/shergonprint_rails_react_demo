@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2019_01_21_074922) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.boolean "done"
+    t.boolean "done", default: false
     t.bigint "todo_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

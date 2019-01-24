@@ -4,4 +4,5 @@ class Item < ApplicationRecord
 
   # validation
   validates_presence_of :name
+  validates :name, uniqueness: { scope: :todo_id }
 end

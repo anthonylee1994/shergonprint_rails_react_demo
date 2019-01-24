@@ -4,4 +4,5 @@ class Todo < ApplicationRecord
 
   # validations
   validates_presence_of :title, :created_by
+  validates :title, uniqueness: { scope: :created_by }
 end
