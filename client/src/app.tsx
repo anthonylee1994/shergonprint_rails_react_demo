@@ -10,6 +10,8 @@ import { getThunkExtension } from 'redux-dynamic-modules-thunk';
 import "whatwg-fetch";
 import Intl from './widgets/intl';
 import { getIntlModule } from './widgets/intl/redux/intl-module';
+import { getMaterialDialogModule } from './widgets/material-dialog/redux/material-dialog-module';
+import { getMaterialSnackbarModule } from './widgets/material-snackbar/redux/material-snackbar-module';
 import MaterialWrapper from './widgets/material-ui';
 import ProgressCircle from './widgets/progress-circle/index';
 import { getReduxFormModule } from './widgets/redux_form/redux/redux-form-module';
@@ -38,6 +40,8 @@ class App extends React.Component<any, any> {
         const todoSignupModule = getTodoSignupModule();
         const todoApiModule = getTodoApiModule();
         const todoAppModule = getTodoAppModule();
+        const materialSnackbarModule = getMaterialSnackbarModule();
+        const materialDialogModule = getMaterialDialogModule();
 
         this.store = createStore(
             {
@@ -48,6 +52,8 @@ class App extends React.Component<any, any> {
                         ...todoLoginModule.lang,
                         ...todoSignupModule.lang,
                         ...todoAppModule.lang,
+                        ...materialSnackbarModule.lang,
+                        ...materialDialogModule.lang,
                     },
                 },
             },
@@ -62,7 +68,9 @@ class App extends React.Component<any, any> {
             intlModule,
             reduxFormModule,
             todoApiModule,
-            todoAppModule
+            todoAppModule,
+            materialSnackbarModule,
+            materialDialogModule
         );
     }
 

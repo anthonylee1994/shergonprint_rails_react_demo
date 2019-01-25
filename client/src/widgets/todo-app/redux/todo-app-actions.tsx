@@ -151,12 +151,12 @@ const creators = {
         }),
     },
     removeTodo: {
-        request: (id: number) => ({
-            payload: id,
+        request: (data: any) => ({
+            payload: data,
             type: types.REMOVE_TODO.REQUEST
         }),
-        success: (id: number) => ({
-            payload: id,
+        success: (data: any) => ({
+            payload: data,
             type: types.REMOVE_TODO.SUCCESS
         }),
         failure: (requestAction: any, error: any) => ({
@@ -168,17 +168,17 @@ const creators = {
         }),
     },
     removeTodoItem: {
-        request: (todoId: number, id: number) => ({
+        request: (todoId: number, data: any) => ({
             payload: {
                 todoId,
-                id
+                data
             },
             type: types.REMOVE_TODO_ITEM.REQUEST
         }),
-        success: (todoId: number, id: number) => ({
+        success: (todoId: number, data: any) => ({
             payload: {
                 todoId,
-                id
+                data
             },
             type: types.REMOVE_TODO_ITEM.SUCCESS
         }),

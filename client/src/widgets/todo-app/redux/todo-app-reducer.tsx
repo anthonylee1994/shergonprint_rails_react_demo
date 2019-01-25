@@ -46,8 +46,8 @@ export const todoAppReducer = (state: any = {}, action: any) => {
                     [actionType]: 'success'
                 },
                 todos: [
+                    get(action, 'payload'),
                     ...get(state, 'todos', []),
-                    get(action, 'payload')
                 ]
             };
         case todoAppActions.types.UPDATE_TODO.SUCCESS:
@@ -68,7 +68,7 @@ export const todoAppReducer = (state: any = {}, action: any) => {
                     ...get(state, 'status', {}),
                     [actionType]: 'success'
                 },
-                todos: get(state, 'todos', []).filter((item: any) => get(item, 'id') !== get(action, 'payload')),
+                todos: get(state, 'todos', []).filter((item: any) => get(item, 'id') !== get(action, 'payload.id')),
             };
         case todoAppActions.types.REMOVE_TODO_ITEM.SUCCESS:
             return {
@@ -77,9 +77,10 @@ export const todoAppReducer = (state: any = {}, action: any) => {
                     ...get(state, 'status', {}),
                     [actionType]: 'success'
                 },
-                todos: get(state, 'todos', []).map((item: any) => get(item, 'id') === get(action, 'payload.todoId') ?
-                    get(item, 'items').filter((subItem: any) => get(subItem, 'id') !== get(action, 'payload.id'))
-                    : item),
+                todos: get(state, 'todos', []).map((item: any) => get(item, 'id') === get(action, 'payload.todoId') ? {
+                    ...item,
+                    items: get(item, 'items').filter((subItem: any) => get(subItem, 'id') !== get(action, 'payload.data.id'))
+                }   : item),
             };
         case todoAppActions.types.LOAD_USER_INFO.FAILURE:
         case todoAppActions.types.LOAD_TODOS.FAILURE:

@@ -23,8 +23,8 @@ module V1
 
     # PUT /todos/:id
     def update
-      @todo.update(todo_params)
-      head :no_content
+      @todo.update!(todo_params)
+      json_response(@todo)
     end
 
     # DELETE /todos/:id

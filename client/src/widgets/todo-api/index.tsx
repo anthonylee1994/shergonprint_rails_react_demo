@@ -74,7 +74,7 @@ export const todoApi = {
                     ...generalFetchContext.headers,
                     Authorization: `Bearer ${ls.get('auth_token')}`,
                 },
-                method: 'PATCH',
+                method: 'PUT',
                 body: JSON.stringify({
                     name,
                     done
@@ -122,7 +122,7 @@ export const todoApi = {
                 ...generalFetchContext.headers,
                 Authorization: `Bearer ${ls.get('auth_token')}`,
             },
-            method: 'PATCH',
+            method: 'PUT',
             body: JSON.stringify({
                 title,
             })

@@ -16,9 +16,15 @@ import ContentLoader from 'react-content-loader';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { materialDialogActions } from '../material-dialog/redux/material-dialog-actions';
+import createMaterialSnackbar from '../material-snackbar';
+import { materialSnackbarActions } from '../material-snackbar/redux/material-snackbar-actions';
 import { todoApiActions } from '../todo-api/redux/todo-api-actions';
 import { todoApiSelectors } from '../todo-api/redux/todo-api-selectors';
+import TodoDialog from '../todo-dialog';
+import TodoItemDialog from '../todo-item-dialog';
 import { todoAppActions } from './redux/todo-app-actions';
+import { todoAppConstants } from './redux/todo-app-constants';
 import { todoAppSelectors } from './redux/todo-app-selectors';
 import "./style.css";
 
@@ -29,7 +35,11 @@ interface ITodoAppProps {
     clearAuthToken: () => void;
     loadUserInfo: () => void;
     loadTodos: () => void;
-    removeTodo: (id: number) => void;
+    removeTodo: (data: any) => void;
+    removeTodoItem: (todoId: number, data: any) => void;
+    showSnackbar: (message: string, variant?: string) => void;
+    openTodoDialog: (data?: any) => void;
+    openTodoItemDialog: (data?: any) => void;
     authToken?: string;
     userInfo: any;
     todos: any;
@@ -66,6 +76,8 @@ const styles = (theme: any): any => ({
 
 export class TodoApp extends React.Component<ITodoAppProps, any> {
 
+    public MaterialSnackbar: any = createMaterialSnackbar(todoAppConstants.id);
+
     public signout = () => {
         this.props.clearAuthToken();
         this.props.redirectTo('/');
@@ -79,31 +91,39 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
         this.props.loadTodos();
     }
 
-    public removeTodo = (id: number) => {
-        return () => this.props.removeTodo(id);
+    public removeTodo = (todo: any) => {
+        return () => this.props.removeTodo(todo);
     };
 
-    public renderTodoItem = (item: any, key: number) => {
+    public removeTodoItem = (todoId: number, item: any) => {
+        return () => this.props.removeTodoItem(todoId, item);
+    };
+
+    public renderTodoItem = (todoId: number, item: any, key: number) => {
         const { intl } = this.props;
         const { formatMessage } = intl;
         return (
-            <ListItem key={key} button={true} onClick={this.hello}>
+            <ListItem key={key} button={true}>
                 <Checkbox
                     checked={!!get(item, 'done')}
                 />
                 <ListItemText primary={get(item, 'name')} />
                 <ListItemSecondaryAction>
-                    <Tooltip title={formatMessage({
-                        id: 'app.todo.app.todos.items.edit'
-                    })}>
+                    <Tooltip
+                        title={formatMessage({
+                            id: 'app.todo.app.todos.items.edit'
+                        })}
+                    >
                         <IconButton>
                             <CreateIcon />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={formatMessage({
-                        id: 'app.todo.app.todos.items.remove'
-                    })}>
-                        <IconButton>
+                    <Tooltip
+                        title={formatMessage({
+                            id: 'app.todo.app.todos.items.remove'
+                        })}
+                    >
+                        <IconButton onClick={this.removeTodoItem(todoId, item)}>
                             <CloseIcon />
                         </IconButton>
                     </Tooltip>
@@ -123,7 +143,7 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                         <Tooltip title={formatMessage({
                             id: "app.todo.app.todos.remove"
                         })}>
-                            <IconButton onClick={this.removeTodo(get(list, 'id'))}>
+                            <IconButton onClick={this.removeTodo(list)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
@@ -133,7 +153,7 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                             <Tooltip title={formatMessage({
                                 id: "app.todo.app.todos.edit"
                             })}>
-                                <span style={{ cursor: 'pointer' }}>{get(list, 'title')}</span>
+                                <span style={{ cursor: 'pointer' }} onClick={this.openEditTodoDialog(list)}>{get(list, 'title')}</span>
                             </Tooltip>
                         </Typography>
                     }
@@ -143,7 +163,7 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                 <CardContent style={{ padding: 0 }}>
                     {listItems.length > 0 ? (
                         <List>
-                            {listItems.map(this.renderTodoItem)}
+                            {listItems.map((item: any, i: number) => this.renderTodoItem(get(list, 'id'), item, i))}
                         </List>
                     ) : (
                             <div style={{ padding: '32px 16px', textAlign: 'center' }}>
@@ -154,7 +174,7 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                         )}
                 </CardContent>
                 <CardActions className={classes.actions}>
-                    <Button color="primary">
+                    <Button color="primary" onClick={this.openCreateTodoItemDialog(get(list, 'id'))}>
                         <AddIcon className={classes.leftIcon} />
                         <FormattedMessage id='app.todo.app.todos.items.add' />
                     </Button>
@@ -171,8 +191,38 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
         );
     };
 
-    public hello = () => {
-        alert("hello");
+    public renderSnackbar = () => {
+        const MaterialSnackbar = this.MaterialSnackbar;
+        return (
+            <MaterialSnackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                autoHideDuration={5000}
+            />
+        );
+    };
+
+    public openCreateTodoDialog = () => {
+        return () => this.props.openTodoDialog();
+    };
+
+    public openCreateTodoItemDialog = (todoId: number) => {
+        return () => this.props.openTodoItemDialog({
+            todoId,
+        });
+    };
+
+    public openEditTodoDialog = (data: any) => {
+        return () => this.props.openTodoDialog(data);
+    };
+
+    public openEditTodoItemDialog = (todoId: number, data: any) => {
+        return () => this.props.openTodoItemDialog({
+            todoId,
+            data,
+        });
     };
 
     public render() {
@@ -210,7 +260,7 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                     {isTodosLoading ? this.renderCircularProgress() : (
                         todos.length > 0 ? todos.map(this.renderTodoList) : (
                             <div style={{ padding: '32px 16px', textAlign: 'center' }}>
-                                <Typography variant="h5" color="textSecondary">
+                                <Typography variant="h6" color="textSecondary">
                                     <FormattedMessage id="app.todo.app.todos.empty" />
                                 </Typography>
                             </div>
@@ -220,10 +270,13 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                 <Tooltip title={formatMessage({
                     id: "app.todo.app.todos.add"
                 })}>
-                    <Fab color="secondary" className={classes.fab}>
+                    <Fab color="secondary" className={classes.fab} onClick={this.openCreateTodoDialog()}>
                         <AddIcon />
                     </Fab>
                 </Tooltip>
+                {this.renderSnackbar()}
+                <TodoDialog />
+                <TodoItemDialog />
             </div>
         );
     };
@@ -242,6 +295,10 @@ export default connect(
         clearAuthToken: bindActionCreators(todoApiActions.creators.clearAuthToken, dispatch),
         loadUserInfo: bindActionCreators(todoAppActions.creators.loadUserInfo.request, dispatch),
         loadTodos: bindActionCreators(todoAppActions.creators.loadTodos.request, dispatch),
+        removeTodoItem: bindActionCreators(todoAppActions.creators.removeTodoItem.request, dispatch),
         removeTodo: bindActionCreators(todoAppActions.creators.removeTodo.request, dispatch),
+        showSnackbar: bindActionCreators(materialSnackbarActions.creators.open(todoAppConstants.id), dispatch),
+        openTodoDialog: bindActionCreators(materialDialogActions.creators.open(todoAppConstants.id + '-todo'), dispatch),
+        openTodoItemDialog: bindActionCreators(materialDialogActions.creators.open(todoAppConstants.id + '-item'), dispatch),
     })
 )(injectIntl(withStyles(styles)(TodoApp) as any));
