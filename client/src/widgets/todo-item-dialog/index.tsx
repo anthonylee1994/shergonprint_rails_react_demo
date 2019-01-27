@@ -25,9 +25,9 @@ interface ITodoItemDialogProps {
     destroyForm: () => void;
     initForm: (form: any) => void;
     showSnackbar: (message: string, variant?: string) => void;
-    createRequest: (todoId: string, data: any) => void;
+    createRequest: (todoId: number, data: any) => void;
     createSuccess: (data: any) => void;
-    updateRequest: (todoId: string, data: any) => void;
+    updateRequest: (todoId: number, data: any) => void;
     updateSuccess: (data: any) => void;
     onClose: () => void;
 }
@@ -135,6 +135,8 @@ class TodoItemDialog extends React.Component<ITodoItemDialogProps, any> {
         const { todoData, intl, handleSubmit, status } = this.props;
         const { formatMessage } = intl;
         const Dialog = this.Dialog;
+
+        console.log(todoData);
 
         const isLoading = !!get(todoData, 'item') ? get(status, 'CREATE_TODO_ITEM') === 'request' : get(status, 'UPDATE_TODO_ITEM') === 'request';
 

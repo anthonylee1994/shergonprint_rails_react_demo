@@ -11,6 +11,8 @@ export const todoAppLang = {
     'app.todo.app.todos.items.remove.error': 'Remove Todo item \'{name}\' failed',
     'app.todo.app.todos.items.create.success': 'Create Todo item \'{name}\' successfully',
     'app.todo.app.todos.items.create.error': 'Create Todo item \'{name}\' failed',
+    'app.todo.app.todos.items.update.success': 'Update Todo item \'{name}\' successfully',
+    'app.todo.app.todos.items.update.error': 'Update Todo item \'{name}\' failed',
     'app.todo.app.todos.items.empty': 'No Items',
     'app.todo.app.todos.add': 'New Todo',
     'app.todo.app.todos.edit': 'Edit Todo',

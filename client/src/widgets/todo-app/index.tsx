@@ -19,6 +19,7 @@ import { bindActionCreators } from 'redux';
 import { materialDialogActions } from '../material-dialog/redux/material-dialog-actions';
 import createMaterialSnackbar from '../material-snackbar';
 import { materialSnackbarActions } from '../material-snackbar/redux/material-snackbar-actions';
+import { todoApi } from '../todo-api';
 import { todoApiActions } from '../todo-api/redux/todo-api-actions';
 import { todoApiSelectors } from '../todo-api/redux/todo-api-selectors';
 import TodoDialog from '../todo-dialog';
@@ -40,6 +41,8 @@ interface ITodoAppProps {
     showSnackbar: (message: string, variant?: string) => void;
     openTodoDialog: (data?: any) => void;
     openTodoItemDialog: (data?: any) => void;
+    updateItemRequest: (todoId: number, data: any) => void;
+    updateItemSuccess: (data: any) => void;
     authToken?: string;
     userInfo: any;
     todos: any;
@@ -102,19 +105,20 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
     public renderTodoItem = (todoId: number, item: any, key: number) => {
         const { intl } = this.props;
         const { formatMessage } = intl;
+        const isDone = !!get(item, 'done');
         return (
-            <ListItem key={key} button={true}>
+            <ListItem key={key} button={true} onClick={this.onMarkDone(todoId, item)}>
                 <Checkbox
-                    checked={!!get(item, 'done')}
+                    checked={isDone}
                 />
-                <ListItemText primary={get(item, 'name')} />
+                <ListItemText primary={get(item, 'name')} className={isDone ? 'done-item' : ''} />
                 <ListItemSecondaryAction>
                     <Tooltip
                         title={formatMessage({
                             id: 'app.todo.app.todos.items.edit'
                         })}
                     >
-                        <IconButton>
+                        <IconButton onClick={this.openEditTodoItemDialog(todoId, item)}>
                             <CreateIcon />
                         </IconButton>
                     </Tooltip>
@@ -130,6 +134,40 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
                 </ListItemSecondaryAction>
             </ListItem>
         );
+    };
+
+    public onMarkDone = (todoId: number, item: any) => {
+        return async () => {
+            const { updateItemRequest, updateItemSuccess, showSnackbar, intl } = this.props;
+            const { formatMessage } = intl;
+            const values = {
+                ...item,
+                done: !get(item, 'done', false)
+            };
+            updateItemRequest(todoId, values);
+            const response = await todoApi.todo.items.update(todoId, get(item, 'id'), values);
+            const json = await response.json();
+            if (!get(json, 'error')) {
+                updateItemSuccess(json);
+                showSnackbar(
+                    formatMessage({
+                        id: 'app.todo.app.todos.items.update.success',
+                    }, {
+                            name: get(values, 'name')
+                        }),
+                    'success'
+                );
+            } else {
+                showSnackbar(
+                    formatMessage({
+                        id: 'app.todo.app.todos.items.update.error',
+                    }, {
+                            name: get(values, 'name')
+                        }),
+                    'error'
+                );
+            }
+        };
     };
 
     public renderTodoList = (list: any, key: number) => {
@@ -218,10 +256,10 @@ export class TodoApp extends React.Component<ITodoAppProps, any> {
         return () => this.props.openTodoDialog(data);
     };
 
-    public openEditTodoItemDialog = (todoId: number, data: any) => {
+    public openEditTodoItemDialog = (todoId: number, item: any) => {
         return () => this.props.openTodoItemDialog({
             todoId,
-            data,
+            item,
         });
     };
 
@@ -300,5 +338,7 @@ export default connect(
         showSnackbar: bindActionCreators(materialSnackbarActions.creators.open(todoAppConstants.id), dispatch),
         openTodoDialog: bindActionCreators(materialDialogActions.creators.open(todoAppConstants.id + '-todo'), dispatch),
         openTodoItemDialog: bindActionCreators(materialDialogActions.creators.open(todoAppConstants.id + '-item'), dispatch),
+        updateItemRequest: bindActionCreators(todoAppActions.creators.updateTodoItem.request, dispatch),
+        updateItemSuccess: bindActionCreators(todoAppActions.creators.updateTodoItem.success, dispatch),
     })
 )(injectIntl(withStyles(styles)(TodoApp) as any));

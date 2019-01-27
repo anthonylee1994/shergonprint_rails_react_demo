@@ -4,6 +4,12 @@
     max-width: 800px;
 }
 
+.done-item span {
+    text-decoration: line-through;
+    color: #aaa !important;
+    font-style: italic;
+}
+
 @media screen and (min-width: 600px) {
     .app-content {
         margin: 64px auto 96px auto;
